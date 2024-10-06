@@ -11,7 +11,7 @@ fn main() {
 
     // Infinite loop
     loop {
-        println!("Please input your guess.");
+        println!("Please input your guess.\n(Type 'quit' or 'exit' to quit the game)");
 
         // Random number
         // mut makes a variable mutable
@@ -22,6 +22,9 @@ fn main() {
         io::stdin()
             .read_line(&mut guess)
             .expect("Failed to read line...");
+
+        // Checking for user exit
+        check_user_quit(guess.trim().to_lowercase().as_str());
 
         // Shadowing lets us reuse the guess variable name rather than forcing us to create two unique variables.
         // parse() returns an Ok or Err value, that we are matching and handling the user made error if f.e. no number is given.
@@ -44,4 +47,29 @@ fn main() {
             }
         }
     }
+}
+
+///
+/// # Summary
+/// Checks if the user wants to quit the game.
+/// Valid inputs for quitting the game are:
+///   - quit
+///   - exit
+/// Quits the game with exitcode 0.
+/// # Arguments
+///
+/// * `guess` - A str which contains the 'guess' / input of the user.
+/// # Example
+/// ```
+/// // If only a String if given and not a str, then conversion has to be done.
+/// check_user_quit(guess.trim().to_lowercase().as_str());
+/// ```
+fn check_user_quit(guess: &str) {
+    match guess.trim().to_lowercase().as_str() {
+        "quit" | "exit" => {
+            println!("You've quitted the game.");
+            std::process::exit(0);
+        }
+        _ => {}
+    };
 }
